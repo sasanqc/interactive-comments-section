@@ -1,0 +1,68 @@
+@use "../abstracts/" as *;
+.comment {
+  &__header {
+    margin-bottom: rem(16);
+  }
+  &__vote {
+    padding: rem(12) rem(16);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: rem(20);
+    .heading-m {
+      color: var(--clr-moderate-blue);
+    }
+    svg {
+      cursor: pointer;
+      fill: var(--clr-light-grayish-blue);
+      :hover {
+        fill: var(--clr-moderate-blue);
+      }
+    }
+  }
+  &__image {
+    width: rem(32);
+    height: rem(32);
+  }
+
+  &__date {
+    color: var(--clr-grayish-blue);
+  }
+  &__header {
+    display: grid;
+    grid-template-columns: auto auto auto 1fr;
+    align-items: center;
+    gap: rem(16);
+  }
+  .btn {
+    justify-self: end;
+  }
+
+  &__text {
+    color: var(--clr-grayish-blue);
+  }
+  &__container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: rem(24);
+    margin-bottom: rem(20);
+    padding: rem(28) rem(0) rem(28) rem(24);
+  }
+  &__vertical-line {
+    background-color: var(--clr-light-gray);
+    width: 2px;
+    margin-left: rem(20);
+    margin-right: rem(20);
+  }
+  &__you {
+    margin-left: rem(7);
+    text-transform: uppercase;
+    background-color: var(--clr-moderate-blue);
+    font-weight: 500;
+    font-size: rem(13);
+    line-height: rem(15);
+    padding: rem(3) rem(6);
+    color: var(--clr-white);
+    border-radius: 2px;
+  }
+}

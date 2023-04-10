@@ -17,8 +17,8 @@ html {
 }
 
 body {
-  font-family: "JetBrains Mono";
-  background-color: var(--clr-very-dark-grey);
+  font-family: var(--font-family);
+  background-color: var(--clr-very-light-gray);
 
   font-size: rem(18);
   line-height: rem(24);

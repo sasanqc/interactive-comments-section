@@ -1,17 +1,27 @@
 @use "../abstracts/" as *;
-@use "../abstracts/" as *;
 
 .heading-l {
-  font-size: rem(32);
-  line-height: rem(42);
+  font-size: rem(24);
+  line-height: rem(28);
 }
 
 .heading-m {
-  font-size: rem(24);
-  line-height: rem(32);
+  font-size: rem(16);
+  line-height: rem(19);
+}
+
+.body-b,
+.heading-m,
+.heading-l {
+  font-weight: 500;
+}
+
+.body,
+.body-b {
+  font-size: rem(16);
+  line-height: rem(24);
 }
 
 .body {
-  font-size: rem(18);
-  line-height: rem(24);
+  font-weight: 400;
 }

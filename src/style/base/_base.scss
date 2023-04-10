@@ -1,0 +1,42 @@
+@use "../abstracts/" as *;
+
+html {
+  font-size: 62.5%; // 1rem = 10px; 10px/16px = 62.5%
+
+  @include respond(tab-land) {
+    font-size: 56.25%; //1rem = 9px , 9/16 = 56.25%
+  }
+
+  @include respond(tab-port) {
+    font-size: 50%; // 1rem = 8px, 8/16 = 50%
+  }
+
+  @include respond(big-desktop) {
+    font-size: 80%; // 1rem = 12px , 12/15 = 80%
+  }
+}
+
+body {
+  font-family: "JetBrains Mono";
+  background-color: var(--clr-very-dark-grey);
+
+  font-size: rem(18);
+  line-height: rem(24);
+  color: var(--clr-almost-white);
+  font-weight: 700;
+  // transition: all 0.25s ease;
+  // @include respond(tab-land) {
+  //   font-size: rem(18, $fs-m);
+  //   line-height: rem(24, $fs-m);
+  // }
+
+  // @include respond(tab-port) {
+  //   font-size: rem(18, $fs-s);
+  //   line-height: rem(24, $fs-s);
+  // }
+
+  // @include respond(phone) {
+  //   font-size: rem(15, $fs-s);
+  //   line-height: rem(24, $fs-s);
+  // }
+}

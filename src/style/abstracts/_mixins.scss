@@ -1,0 +1,47 @@
+@use "sass:math";
+// 0 - 600px : mobile
+// 600px - 900px : tablet portrait
+// 900px - 1200px : tablet landscape
+// [1200px - 1800 px ] normal style
+// 1800px+ big screen
+$fs-xl: 12;
+$fs-l: 10;
+$fs-m: 9;
+$fs-s: 8;
+@mixin respond($breakpoint) {
+  @if $breakpoint == phone {
+    //600px
+    @media (max-width: 37.5em) {
+      @content;
+    }
+  }
+  @if $breakpoint == tab-port {
+    //900px
+    @media (max-width: 56.25rem) {
+      @content;
+    }
+  }
+  @if $breakpoint == tab-land {
+    //1200px
+    @media (max-width: 75em) {
+      @content;
+    }
+  }
+  @if $breakpoint == big-desktop {
+    //1800px
+    @media (min-width: 112.5em) {
+      @content;
+    }
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Source: https://css-tricks.com/snippets/sass/px-to-em-functions/
+@function rem($pixels, $context: $fs-l) {
+  @return (math.div($pixels, $context)) * 1rem;
+}

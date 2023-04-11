@@ -10,11 +10,16 @@
     border: 1px solid var(--clr-light-gray);
     border-radius: 8px;
     padding: rem(12) rem(24);
+    color: var(--clr-dark-blue);
     &::placeholder {
       font-weight: 400;
       font-size: rem(16);
       line-height: rem(24);
       color: var(--clr-grayish-blue);
+    }
+    &:focus {
+      outline: none;
+      border: 1px solid var(--clr-moderate-blue);
     }
   }
 

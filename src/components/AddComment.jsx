@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddComment = () => {
+const AddComment = ({ type }) => {
   return (
     <article className="add-comment">
       <img
@@ -15,7 +15,7 @@ const AddComment = () => {
         className="body add-comment__text"
         placeholder="Add a comment ..."
       ></textarea>
-      <button className="btn btn--fill-blue">send</button>
+      <button className="btn btn--fill-blue">{type}</button>
     </article>
   );
 };

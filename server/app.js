@@ -1,13 +1,20 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const morgan = require("morgan");
+dotenv.config({ path: "./config.env" });
+const commentRouter = require("./routes/commentRouter.js");
+const errorController = require("./controllers/errorController.js");
+const port = process.env.PORT || 3500;
+const DB = process.env.DB;
 const app = express();
-console.log(process.env);
-const port = 3500;
-app.get("/api/v1/tours", (req, res) => {
-  res.status(200).json({ message: "Hello from express", app: "express" });
-});
-app.post("/", (req, res) => {
-  res.send("you can post to this endpoint");
-});
-app.listen(port, () => {
-  console.log(`App running on port ${port}`);
-});
+mongoose
+  .connect(DB)
+  .then(() => console.log("connected to database successfully"));
+app.use(express.json());
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+app.use("/api/v1/comments", commentRouter);
+app.use(errorController);
+app.listen(port, () => console.log(`app running on port ${port}`));

@@ -1,43 +1,31 @@
-import React, { useEffect, useCallback, useState } from "react";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Comment from "../components/Comment";
 import data from "../data.json";
 import AddComment from "../components/AddComment";
+import { getAllComments, voteComment } from "../store/comment-slice";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const handleFetchComments = useCallback(async () => {
-    setError(null);
-    setIsLoading(true);
-    try {
-      const response = await fetch("https://swapi.dev/api/films");
-      if (!response.ok) {
-        throw new Error("Something went wrong");
-      }
-      const data = await response.json();
-      console.log(data.results);
-    } catch (error) {
-      console.error(error.message);
-      setError(error.message);
-    }
-    setIsLoading(false);
-  }, []);
+  const dispatch = useDispatch();
+  const comments = useSelector((state) => state.comment);
 
   useEffect(() => {
-    handleFetchComments();
+    dispatch(getAllComments());
+  }, [dispatch]);
 
-    return () => {};
-  }, [handleFetchComments]);
-
+  const handleVote = (id, score) => {
+    dispatch(voteComment(id, score));
+  };
   return (
     <main className="home">
-      {!isLoading &&
-        data.comments.map((el) => (
-          <Comment comment={el} currentUser={data.currentUser} key={el.id} />
-        ))}
-      {!isLoading && error && <p>{error}</p>}
-      {isLoading && <p>loading ...</p>}
+      {comments.items.map((el) => (
+        <Comment
+          comment={el}
+          currentUser={data.currentUser}
+          key={el.id}
+          voteComment={handleVote}
+        />
+      ))}
 
       <AddComment type={"send"} />
     </main>

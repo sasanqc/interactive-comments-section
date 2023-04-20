@@ -8,10 +8,18 @@ import AddComment from "./AddComment";
 
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
-const Comment = ({ comment, currentUser }) => {
+const Comment = ({ comment, currentUser, voteComment }) => {
   const [state, setState] = useState();
 
   const handleConfirmDelete = () => {};
+
+  const handleAddVote = () => {
+    voteComment(comment.id, comment.score + 1);
+  };
+
+  const handleDecreaseVote = () => {
+    voteComment(comment.id, comment.score - 1);
+  };
 
   return (
     <article className="comment">
@@ -25,14 +33,14 @@ const Comment = ({ comment, currentUser }) => {
       )}
       <div className="comment__container">
         <div className="comment__vote">
-          <PlusIcon />
+          <PlusIcon onClick={handleAddVote} />
           <p className="heading-m">{comment.score}</p>
-          <MinusIcon />
+          <MinusIcon onClick={handleDecreaseVote} />
         </div>
         <div className="comment__details">
           <div className="comment__header">
             <img
-              src={comment.user.image.png}
+              src={`./images/avatars/${comment.user.image.png}`}
               alt="User Avatar"
               className="comment__image"
             />
@@ -98,11 +106,7 @@ const Comment = ({ comment, currentUser }) => {
           <div className="comment__vertical-line"></div>
           <div>
             {comment.replies.map((el) => (
-              <Comment
-                comment={el}
-                currentUser={currentUser}
-                key={el.id}
-              ></Comment>
+              <Comment comment={el} currentUser={currentUser} key={el.id} />
             ))}
           </div>
         </div>

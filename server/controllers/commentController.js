@@ -1,45 +1,99 @@
-const Comment = require("../models/commentModel.js");
-const catchAsync = require("../utils/catchAsync.js");
-const ApiFeatures = require("../utils/apiFeature.js");
-exports.getAllComments = catchAsync(async (req, res, next) => {
-  const features = new ApiFeatures(Comment.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
-  const comments = await features.query;
+const Comment = require("../models/commentModel");
+const catchAsync = require("../utils/catchAsync");
 
-  // SEND RESPONSE
+exports.getAllComments = catchAsync(async (req, res, next) => {
+  const docs = await Comment.find({ replyingTo: { $exists: false } })
+    .populate({ path: "user", select: "-__v -_id -email" })
+    .populate({
+      path: "replies",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "-__v -_id -email",
+      },
+    })
+    .select("-__v");
   res.status(200).json({
     status: "success",
-    results: comments.length,
+    results: docs.length,
     data: {
-      comments,
+      comments: docs,
     },
   });
 });
-exports.getComment = (req, res, next) => {
+
+exports.getComment = catchAsync(async (req, res, next) => {
+  let query = Model.findById(req.params.id)
+    .populate({ path: "user", select: "-__v -_id -email" })
+    .populate({
+      path: "replies",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "-__v -_id -email",
+      },
+    })
+    .select("-__v");
+  if (popOptions) query = query.populate(popOptions);
+  const doc = await query;
+
+  if (!doc) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
   res.status(200).json({
     status: "success",
-    message: "getComment not implemented yet",
-  });
-};
-exports.createComment = catchAsync(async (req, res, next) => {
-  const newComment = await Comment.create(req.body);
-  res.status(200).json({
-    status: "success",
-    data: { comment: newComment },
+    data: {
+      data: doc,
+    },
   });
 });
-exports.updateComment = (req, res, next) => {
+
+exports.createComment = catchAsync(async (req, res, next) => {
+  const doc = await Comment.create(req.body);
+  res.status(201).json({
+    status: "success",
+    data: {
+      data: doc,
+    },
+  });
+});
+exports.updateComment = catchAsync(async (req, res, next) => {
+  const doc = await Comment.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  })
+    .populate({ path: "user", select: "-__v -_id -email" })
+    .populate({
+      path: "replies",
+      populate: {
+        path: "user",
+        model: "User",
+        select: "-__v -_id -email",
+      },
+    })
+    .select("-__v");
+
+  if (!doc) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
   res.status(200).json({
     status: "success",
-    message: "updateComment not implemented yet",
+    data: {
+      data: doc,
+    },
   });
-};
-exports.deleteComment = (req, res, next) => {
-  res.status(200).json({
+});
+exports.deleteComment = catchAsync(async (req, res, next) => {
+  const doc = await Comment.findByIdAndDelete(req.params.id);
+
+  if (!doc) {
+    return next(new AppError("No document found with that ID", 404));
+  }
+
+  res.status(204).json({
     status: "success",
-    message: "deleteComment not implemented yet",
+    data: null,
   });
-};
+});

@@ -1,12 +1,39 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const commentSchema = new Schema({
-  content: { type: String, maxlength: 200 },
-  user: { type: String, required: [true, "A comment must have a user"] },
-  createdAt: { type: Date, default: Date.now },
-  score: { type: Number, default: 0, max: 10 },
-  tags: [String],
-});
+const timeUtils = require("../utils/timeUtils.js");
+const commentSchema = new Schema(
+  {
+    content: {
+      type: String,
+      required: [true, "A comment must have a content"],
+    },
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+      required: [true, "comment must have a user"],
+    },
+    score: { type: Number, default: 0 },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: function (el) {
+        return timeUtils.timeSince(el);
+      },
+    },
+    replies: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
+    replyingTo: String,
+  },
+  {
+    toJSON: {
+      virtuals: true,
+      versionKey: false,
+      getters: true,
+      transform: function (doc, ret) {
+        delete ret._id;
+      },
+    },
+  }
+);
 
-const Commment = mongoose.model("Comment", commentSchema);
-module.exports = Commment;
+const Comment = mongoose.model("Comment", commentSchema);
+module.exports = Comment;

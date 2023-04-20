@@ -1,0 +1,26 @@
+@use "../abstracts/" as *;
+.text-input {
+  color: var(--clr-grayish-blue);
+  font-weight: 500;
+  text-align: start;
+  display: block;
+  p {
+    margin-bottom: rem(8);
+  }
+  input {
+    width: 100%;
+    outline: none;
+    border: solid 1px var(--clr-light-gray);
+    padding: 8px;
+    border-radius: 5px;
+    color: currentColor;
+    appearance: none;
+    font: inherit;
+    &::placeholder {
+      color: var(--clr-light-gray);
+    }
+    &:focus {
+      border: solid 1px var(--clr-moderate-blue);
+    }
+  }
+}

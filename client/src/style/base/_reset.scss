@@ -47,6 +47,10 @@ textarea,
 select {
   font: inherit;
 }
+input {
+  outline: none;
+  border: none;
+}
 button {
   border: none;
   background-color: inherit;
@@ -61,7 +65,7 @@ a,
 a:active,
 a:visited {
   text-decoration: none;
-  font: inherit;
+  // font: inherit;
   color: inherit;
   display: inline-block;
 }

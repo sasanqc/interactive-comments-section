@@ -1,16 +1,44 @@
-import Home from "./pages/Home";
+import { lazy, Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Login from "./pages/Login";
+import AppShell from "./layouts/AppShell";
+const Login = lazy(() => import("./pages/Login"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Home = lazy(() => import("./pages/Home"));
+const Profile = lazy(() => import("./pages/Profile"));
+
+const UnauthenticatedRoutes = () => (
+  <Switch>
+    <Route path="/login">
+      <Login />
+    </Route>
+
+    <Route exact path="/">
+      <Login />
+    </Route>
+    <Route exact path="*">
+      <NotFound />
+    </Route>
+  </Switch>
+);
+const LoadingFallback = () => <div className="p-4">Loading...</div>;
+const AuthenticatedRoute = ({ children, ...rest }) => {
+  return <Route {...rest}>{children}</Route>;
+};
 function App() {
   return (
-    <Switch>
-      <Route path="/home" exact>
-        <Home />
-      </Route>
-      <Route path="/login" exact>
-        <Login />
-      </Route>
-    </Switch>
+    <AppShell>
+      <Suspense fallback={<LoadingFallback />}>
+        <Switch>
+          <AuthenticatedRoute path="/home" exact>
+            <Home />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/profile" exact>
+            <Profile />
+          </AuthenticatedRoute>
+          <UnauthenticatedRoutes />
+        </Switch>
+      </Suspense>
+    </AppShell>
   );
 }
 

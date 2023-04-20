@@ -1,0 +1,22 @@
+@use "../abstracts/" as *;
+.form {
+  max-width: rem(700);
+  margin: 0 auto;
+  margin-top: rem(32);
+  padding: rem(32) rem(64);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  text-align: center;
+  border-radius: 8px;
+  border-top: 5px solid var(--clr-moderate-blue);
+  &__submit {
+    display: flex;
+    justify-content: center;
+  }
+  .text-input {
+    margin-bottom: rem(24);
+  }
+  .heading-l {
+    margin-bottom: rem(32);
+    color: var(--clr-grayish-blue);
+  }
+}

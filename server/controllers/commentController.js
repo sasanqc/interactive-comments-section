@@ -51,6 +51,7 @@ exports.getComment = catchAsync(async (req, res, next) => {
 
 exports.createComment = catchAsync(async (req, res, next) => {
   const doc = await Comment.create(req.body);
+
   res.status(201).json({
     status: "success",
     data: {

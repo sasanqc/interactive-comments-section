@@ -8,7 +8,7 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
-
+const cookieParser = require("cookie-parser");
 const commentRouter = require("./routers/commentRouter.js");
 const userRouter = require("./routers/userRouter.js");
 const globalErrorHandler = require("./controllers/errorController.js");
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === "development") {
 }
 // Set security HTTP headers
 app.use(helmet());
-
+app.use(cookieParser());
 // Limit requests from same API
 const limiter = rateLimit({
   max: 100,

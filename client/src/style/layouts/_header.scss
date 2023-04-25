@@ -4,4 +4,8 @@
   height: rem(64);
   padding: rem(32) rem(64);
   color: var(--clr-white);
+  position: sticky;
+  top: 0;
+  margin-bottom: rem(32);
+  width: 100%;
 }

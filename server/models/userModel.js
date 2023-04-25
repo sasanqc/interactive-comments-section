@@ -40,6 +40,7 @@ const userSchema = new Schema(
     },
     passwordChangedAt: Date,
   },
+
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

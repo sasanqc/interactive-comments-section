@@ -8,6 +8,11 @@
   font-weight: 500;
   font-size: rem(16);
   line-height: rem(24);
+  &--border {
+    border: 1px solid currentColor;
+    padding: rem(6) rem(20);
+    border-radius: 8px;
+  }
 }
 
 .btn--blue {
@@ -44,4 +49,9 @@
   &:hover {
     background-color: var(--clr-pale-red);
   }
+}
+.link {
+  color: var(--clr-moderate-blue);
+  border-bottom: 1px solid var(--clr-moderate-blue);
+  margin-left: 10px;
 }

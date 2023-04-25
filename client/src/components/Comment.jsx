@@ -1,26 +1,38 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import { ReactComponent as ReplyIcon } from "../asstes/icons/icon-reply.svg";
 import { ReactComponent as MinusIcon } from "../asstes/icons/icon-minus.svg";
 import { ReactComponent as PlusIcon } from "../asstes/icons/icon-plus.svg";
 import { ReactComponent as DeleteIcon } from "../asstes/icons/icon-delete.svg";
 import { ReactComponent as EditIcon } from "../asstes/icons/icon-edit.svg";
-import AddComment from "./AddComment";
 
+import AddComment from "./AddComment";
 import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
-const Comment = ({ comment, currentUser, voteComment }) => {
+import { deleteComment } from "../store/comment-slice";
+import { updateComment } from "../store/comment-slice";
+const Comment = ({ comment }) => {
+  const contentRef = useRef();
   const [state, setState] = useState();
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.userInfo);
 
-  const handleConfirmDelete = () => {};
+  const handleConfirmDelete = () => {
+    dispatch(deleteComment(comment.id));
+  };
 
   const handleAddVote = () => {
-    voteComment(comment.id, comment.score + 1);
+    dispatch(updateComment(comment.id, { score: comment.score + 1 }));
   };
 
   const handleDecreaseVote = () => {
-    voteComment(comment.id, comment.score - 1);
+    dispatch(updateComment(comment.id, { score: comment.score - 1 }));
   };
-
+  const handleUpdateComment = () => {
+    dispatch(updateComment(comment.id, { content: contentRef.current.value }));
+    setState(null);
+  };
   return (
     <article className="comment">
       {state === "delete" && (
@@ -87,10 +99,16 @@ const Comment = ({ comment, currentUser, voteComment }) => {
               <textarea
                 className="body comment__textarea"
                 defaultValue={comment.content}
+                ref={contentRef}
               />
 
               <div className="comment__update-btn">
-                <button className="btn btn--fill-blue">update</button>
+                <button
+                  className="btn btn--fill-blue"
+                  onClick={handleUpdateComment}
+                >
+                  update
+                </button>
               </div>
             </Fragment>
           )}
@@ -106,7 +124,7 @@ const Comment = ({ comment, currentUser, voteComment }) => {
           <div className="comment__vertical-line"></div>
           <div>
             {comment.replies.map((el) => (
-              <Comment comment={el} currentUser={currentUser} key={el.id} />
+              <Comment comment={el} key={el.id} />
             ))}
           </div>
         </div>

@@ -1,39 +1,12 @@
-const API_DOMAIN = "http://localhost:3500/api/v1";
+import { getAll, deleteOne, createOne, updateOne, getOne } from "./apiFactory";
+const API_DOMAIN = "http://localhost:3000/api/v1";
 
-export async function getAllComments() {
-  const response = await fetch(`${API_DOMAIN}/comments`);
-  const data = await response.json();
+export const getAllComments = async () => getAll("comments");
 
-  if (!response.ok) {
-    throw new Error(data.message || "Could not fetch comments.");
-  }
-  return data.data.comments;
-}
+export const deleteComment = async (id) => deleteOne(id, "comments");
 
-export async function deleteComment(id) {
-  const response = await fetch(`${API_DOMAIN}/comments/${id}`, {
-    method: "DELETE",
-  });
-  if (!response.ok) {
-    throw new Error("Could not delete comment.");
-  }
-}
-
-export async function updateComment(id, comment) {
-  const response = await fetch(`${API_DOMAIN}/comments/${id}`, {
-    method: "PATCH",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(comment),
-  });
-  if (!response.ok) {
-    throw new Error("Could not update comment.");
-  }
-  const data = await response.json();
-  return data.data.data;
-}
+export const updateComment = async (id, comment) =>
+  updateOne(id, comment, "comments");
 
 export async function createComment(comment) {
   const response = await fetch(`${API_DOMAIN}/comments/`, {
@@ -50,3 +23,9 @@ export async function createComment(comment) {
   const data = await response.json();
   return data.data.data;
 }
+export const signup = async (credentials) =>
+  createOne(credentials, "users/signup");
+export const login = async (credentials) =>
+  createOne(credentials, "users/login");
+export const refresh = async () => getOne("refresh", "users");
+export const logout = async () => getOne("logout", "users");

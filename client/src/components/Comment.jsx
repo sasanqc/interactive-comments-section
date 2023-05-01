@@ -12,7 +12,7 @@ import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 import { deleteComment } from "../store/comment-slice";
 import { updateComment } from "../store/comment-slice";
-const Comment = ({ comment }) => {
+const Comment = ({ comment, replyTo }) => {
   const contentRef = useRef();
   const [state, setState] = useState();
   const dispatch = useDispatch();
@@ -33,6 +33,7 @@ const Comment = ({ comment }) => {
     dispatch(updateComment(comment.id, { content: contentRef.current.value }));
     setState(null);
   };
+  const handleReplyComment = () => {};
   return (
     <article className="comment">
       {state === "delete" && (
@@ -52,7 +53,7 @@ const Comment = ({ comment }) => {
         <div className="comment__details">
           <div className="comment__header">
             <img
-              src={`./images/avatars/${comment.user.image.png}`}
+              src={`./images/avatars/${comment.user.image?.png}`}
               alt="User Avatar"
               className="comment__image"
             />
@@ -117,14 +118,14 @@ const Comment = ({ comment }) => {
           )}
         </div>
       </div>
-      {state === "reply" && <AddComment type={"reply"} />}
+      {state === "reply" && <AddComment type={"reply"} replyTo={comment.id} />}
 
       {comment.replies?.length > 0 && (
         <div className="comment__container">
           <div className="comment__vertical-line"></div>
           <div>
             {comment.replies.map((el) => (
-              <Comment comment={el} key={el.id} />
+              <Comment comment={el} key={el.id} replyTo={comment.id} />
             ))}
           </div>
         </div>

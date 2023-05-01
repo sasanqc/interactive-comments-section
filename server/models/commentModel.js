@@ -20,8 +20,8 @@ const commentSchema = new Schema(
         return timeUtils.timeSince(el);
       },
     },
-    replies: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
-    replyingTo: String,
+    replies: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+    replyingTo: { type: Schema.Types.ObjectId, ref: "Comment" },
   },
   {
     toJSON: {
@@ -34,6 +34,17 @@ const commentSchema = new Schema(
     },
   }
 );
+
+commentSchema.pre(/^find/, function () {
+  this.populate({ path: "user", select: "-__v -_id -email" }).populate({
+    path: "replies",
+    populate: {
+      path: "user",
+      model: "User",
+      select: "-__v -_id -email",
+    },
+  });
+});
 
 const Comment = mongoose.model("Comment", commentSchema);
 module.exports = Comment;

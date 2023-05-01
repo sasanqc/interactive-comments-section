@@ -1,6 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as api from "../lib/api";
 
+const findAndOperateOnComment = (data, id, payload, fn) => {
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].id === id) {
+      fn(data, i, payload);
+      return true;
+    } else {
+      for (let j = 0; j < data[i].replies?.length; j++) {
+        if (findAndOperateOnComment(data[i].replies, id, payload, fn)) {
+          return true;
+        }
+      }
+    }
+  }
+};
 const commentSlice = createSlice({
   name: "comment",
   initialState: { items: [], status: null },
@@ -9,12 +23,12 @@ const commentSlice = createSlice({
       state.items.push(action.payload);
     },
     deleteComment(state, action) {
-      const index = state.items.findIndex((i) => {
-        return i.id === action.payload;
-      });
-      if (index >= 0) {
-        state.items.splice(index, 1);
-      }
+      findAndOperateOnComment(
+        state.items,
+        action.payload,
+        null,
+        (data, index) => data.splice(index, 1)
+      );
     },
     setComments(state, action) {
       state.items = action.payload.items;
@@ -23,23 +37,21 @@ const commentSlice = createSlice({
     setStatus(state, action) {
       state.status = action.payload;
     },
+    addReplyToComment(state, action) {
+      findAndOperateOnComment(
+        state.items,
+        action.payload.replyingTo,
+        action.payload,
+        (data, index, payload) => data[index].replies.push(payload)
+      );
+    },
     updateComment(state, action) {
-      const findAndUpdate = (data) => {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].id === action.payload.id) {
-            data[i] = action.payload;
-            return true;
-          } else {
-            for (let j = 0; j < data[i].replies?.length; j++) {
-              if (findAndUpdate(data[i].replies)) {
-                return true;
-              }
-            }
-          }
-        }
-      };
-
-      findAndUpdate(state.items);
+      findAndOperateOnComment(
+        state.items,
+        action.payload.id,
+        action.payload,
+        (data, index, payload) => (data[index] = payload)
+      );
     },
   },
 });
@@ -103,6 +115,18 @@ export const addComment = (content) => {
   };
 };
 
+export const replyComment = (replyingTo, content) => {
+  return async (dispatch, getState) => {
+    const user = getState().auth.userInfo;
+    const data = await api.createComment({
+      content,
+      replyingTo,
+      user: user._id,
+    });
+    data.user = user;
+    dispatch(commentActions.addReplyToComment(data));
+  };
+};
 export const commentActions = commentSlice.actions;
 
 export default commentSlice;

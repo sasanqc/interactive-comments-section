@@ -17,27 +17,39 @@ export const deleteOne = async (id, resource) => {
 };
 
 export const createOne = async (body, resource) => {
-  const response = await fetch(`${API_DOMAIN}/${resource}`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${API_DOMAIN}/${resource}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateOne = async (id, body, resource) => {
-  const response = await fetch(`${API_DOMAIN}/${resource}/${id}`, {
-    method: "PATCH",
-    headers,
-    body: JSON.stringify(body),
-  });
-  const data = await response.json();
-  return data.data;
+  try {
+    const response = await fetch(`${API_DOMAIN}/${resource}/${id}`, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getOne = async (id, resource) => {
-  const response = await fetch(`${API_DOMAIN}/${resource}/${id}`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${API_DOMAIN}/${resource}/${id}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };

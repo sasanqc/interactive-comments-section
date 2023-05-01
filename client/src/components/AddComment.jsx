@@ -1,17 +1,20 @@
 import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { addComment } from "../store/comment-slice";
-const AddComment = ({ type }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { addComment, replyComment } from "../store/comment-slice";
+const AddComment = ({ type, replyTo }) => {
   const contentRef = useRef();
+  const user = useSelector((state) => state.auth.userInfo);
   const dispatch = useDispatch();
   const handleAddComment = () => {
-    dispatch(addComment(contentRef.current.value));
+    if (type === "send") dispatch(addComment(contentRef.current.value));
+    if (type === "reply")
+      dispatch(replyComment(replyTo, contentRef.current.value));
   };
   return (
     <article className="add-comment">
       <img
         className="add-comment__image"
-        src="./images/avatars/image-amyrobson.png"
+        src={`./images/avatars/${user.image?.png}`}
         alt="My Profile"
       />
 

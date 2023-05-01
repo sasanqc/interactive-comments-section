@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { login } from "../store/auth-slice";
 const Login = () => {
-  // console.log("Login RENDERING");
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [form, setForm] = useState({});

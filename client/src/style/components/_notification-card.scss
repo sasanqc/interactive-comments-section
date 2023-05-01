@@ -1,0 +1,47 @@
+@use "../abstracts/" as *;
+.notification-card {
+  max-width: rem(800);
+  margin: 0 auto;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  position: relative;
+  //   animation-duration: 0.2s;
+  //   animation-name: notifIn;
+  //   animation-timing-function: ease-out;
+  background-color: var(--clr-white);
+
+  &__border {
+    height: 5px;
+
+    background-color: orangered;
+    animation-duration: 2s;
+    animation-name: notifBorder;
+    animation-timing-function: linear;
+  }
+  &:hover &__border {
+    animation-play-state: paused;
+    cursor: pointer;
+  }
+  &__content {
+    padding: rem(16);
+  }
+  overflow: hidden;
+}
+@keyframes notifIn {
+  from {
+    top: -700px;
+  }
+
+  to {
+    top: 0;
+  }
+}
+@keyframes notifBorder {
+  from {
+    width: 0px;
+  }
+
+  to {
+    width: 100%;
+  }
+}

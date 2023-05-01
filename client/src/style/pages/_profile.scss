@@ -1,0 +1,35 @@
+@use "../abstracts/" as *;
+
+.profile {
+  margin: auto;
+  color: var(--clr-grayish-blue);
+  text-align: center;
+  &__upload {
+    display: flex;
+    align-items: center;
+    margin-bottom: rem(64);
+    margin-top: rem(32);
+  }
+  &__thumbnail {
+    position: relative;
+    width: rem(100);
+    height: rem(100);
+    border-radius: 50%;
+    overflow: hidden;
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+    img.portrait {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+.notifications {
+  background: transparent;
+  position: fixed;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  top: 0;
+  padding-top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 110;
+}

@@ -1,18 +1,9 @@
 const Comment = require("../models/commentModel");
+const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getAllComments = catchAsync(async (req, res, next) => {
-  const docs = await Comment.find({ replyingTo: { $exists: false } })
-    .populate({ path: "user", select: "-__v -_id -email" })
-    .populate({
-      path: "replies",
-      populate: {
-        path: "user",
-        model: "User",
-        select: "-__v -_id -email",
-      },
-    })
-    .select("-__v");
+  const docs = await Comment.find({ replyingTo: { $exists: false } });
   res.status(200).json({
     status: "success",
     results: docs.length,
@@ -21,19 +12,10 @@ exports.getAllComments = catchAsync(async (req, res, next) => {
     },
   });
 });
-
+// { replyingTo: { $exists: false } }
 exports.getComment = catchAsync(async (req, res, next) => {
-  let query = Model.findById(req.params.id)
-    .populate({ path: "user", select: "-__v -_id -email" })
-    .populate({
-      path: "replies",
-      populate: {
-        path: "user",
-        model: "User",
-        select: "-__v -_id -email",
-      },
-    })
-    .select("-__v");
+  let query = Model.findById(req.params.id);
+
   if (popOptions) query = query.populate(popOptions);
   const doc = await query;
 
@@ -51,7 +33,11 @@ exports.getComment = catchAsync(async (req, res, next) => {
 
 exports.createComment = catchAsync(async (req, res, next) => {
   const doc = await Comment.create(req.body);
-
+  if (req.body.replyingTo) {
+    const parent = await Comment.findById(req.body.replyingTo);
+    parent.replies.push(doc._id);
+    await parent.save();
+  }
   res.status(201).json({
     status: "success",
     data: {
@@ -59,21 +45,12 @@ exports.createComment = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 exports.updateComment = catchAsync(async (req, res, next) => {
   const doc = await Comment.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
-  })
-    .populate({ path: "user", select: "-__v -_id -email" })
-    .populate({
-      path: "replies",
-      populate: {
-        path: "user",
-        model: "User",
-        select: "-__v -_id -email",
-      },
-    })
-    .select("-__v");
+  });
 
   if (!doc) {
     return next(new AppError("No document found with that ID", 404));
@@ -86,9 +63,9 @@ exports.updateComment = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 exports.deleteComment = catchAsync(async (req, res, next) => {
   const doc = await Comment.findByIdAndDelete(req.params.id);
-
   if (!doc) {
     return next(new AppError("No document found with that ID", 404));
   }

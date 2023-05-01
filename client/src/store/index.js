@@ -1,12 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import commentSlice from "./comment-slice";
+import uiSlice from "./ui-slice";
 import authSlice, { authActions } from "./auth-slice";
 import Cookies from "js-cookie";
 import { refresh } from "./auth-slice";
+
 const store = configureStore({
-  reducer: { comment: commentSlice.reducer, auth: authSlice.reducer },
+  reducer: {
+    comment: commentSlice.reducer,
+    auth: authSlice.reducer,
+    ui: uiSlice.reducer,
+  },
 });
+
 store.dispatch(
   authActions.setAuthState({
     token: Cookies.get("token") || null,

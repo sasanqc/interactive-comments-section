@@ -55,3 +55,9 @@
   border-bottom: 1px solid var(--clr-moderate-blue);
   margin-left: 10px;
 }
+.btn-container {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}

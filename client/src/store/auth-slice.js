@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import * as api from "../lib/api";
+import { catchAsync } from "../errorConroller/catchAsync";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -27,8 +28,12 @@ const authSlice = createSlice({
           new Date().getTime() < new Date(expiresAt).getTime();
       }
     },
+
+    updateUserInfo(state, action) {
+      state.userInfo = action.payload;
+    },
+
     resetAuthState(state, action) {
-      console.log("resetAuthState");
       state.token = null;
       state.userInfo = {};
       state.expiresAt = null;
@@ -37,22 +42,25 @@ const authSlice = createSlice({
   },
 });
 export const login = (credentials) => {
-  return async (dispatch) => {
-    try {
-      const {
-        expiresAt,
-        token,
-        data: { user: userInfo },
-      } = await api.login(credentials);
-
-      dispatch(authActions.setAuthState({ expiresAt, token, userInfo }));
-
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      localStorage.setItem("expiresAt", expiresAt);
-    } catch (error) {
-      //dispatch(commentActions.setStatus("ERROR"));
+  return catchAsync(async (dispatch) => {
+    const response = await api.login(credentials);
+    console.log(response);
+    if (
+      !response ||
+      response?.status === "fail" ||
+      response?.status === "error"
+    ) {
+      throw new Error(response.message);
     }
-  };
+    const {
+      expiresAt,
+      token,
+      data: { user: userInfo },
+    } = response;
+    dispatch(authActions.setAuthState({ expiresAt, token, userInfo }));
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    localStorage.setItem("expiresAt", expiresAt);
+  });
 };
 export const signup = (credentials) => {
   return async (dispatch) => {
@@ -97,7 +105,14 @@ export const logout = () => {
     dispatch(authActions.resetAuthState());
   };
 };
-
+export const updateMe = (data) => {
+  return async (dispatch) => {
+    const { user: userInfo } = await api.updateMe(data);
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    console.log(userInfo);
+    dispatch(authActions.updateUserInfo(userInfo));
+  };
+};
 export const authActions = authSlice.actions;
 
 export default authSlice;

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AppShell from "./layouts/AppShell";
@@ -36,6 +36,9 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
 };
 
 function App() {
+  useEffect(() => {
+    console.log("APP useeffect");
+  });
   return (
     <AppShell>
       <Suspense fallback={<LoadingFallback />}>

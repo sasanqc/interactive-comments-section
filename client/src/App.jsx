@@ -36,9 +36,6 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
 };
 
 function App() {
-  useEffect(() => {
-    console.log("APP useeffect");
-  });
   return (
     <AppShell>
       <Suspense fallback={<LoadingFallback />}>

@@ -1,16 +1,44 @@
 @use "../abstracts/" as *;
 .comment {
+  padding: rem(24);
+  @include respond(phone) {
+    padding: rem(16, $fs-s);
+  }
+  &__container {
+    display: grid;
+    grid-template-areas:
+      "vote head head btns"
+      "vote main main main";
+    grid-template-columns: rem(40);
+    margin-bottom: rem(8);
+    gap: rem(16);
+
+    @include respond(phone) {
+      grid-template-areas:
+        "head head head head"
+        "main main main main"
+        "vote vote vote btns";
+    }
+  }
   &__header {
-    margin-bottom: rem(16);
+    display: flex;
+    align-items: center;
+    gap: rem(16);
+    grid-area: head;
   }
   &__vote {
-    padding: rem(12) rem(16);
+    // padding: rem(12) rem(16);
     display: flex;
+    grid-area: vote;
     flex-direction: column;
     align-items: center;
     gap: rem(20);
-    min-width: rem(60);
+
     user-select: none;
+
+    @include respond(phone) {
+      flex-direction: row;
+    }
     .heading-m {
       color: var(--clr-moderate-blue);
     }
@@ -22,7 +50,11 @@
       }
     }
   }
+  &__text {
+    color: var(--clr-grayish-blue);
 
+    grid-area: main;
+  }
   &__image {
     width: rem(32);
     height: rem(32);
@@ -32,33 +64,25 @@
   &__date {
     color: var(--clr-grayish-blue);
   }
-  &__header {
-    display: grid;
-    grid-template-columns: auto auto auto 1fr;
-    align-items: center;
-    gap: rem(16);
-  }
+
   &__btns {
     justify-self: end;
     display: flex;
     gap: rem(24);
+
+    justify-content: center;
+    align-items: center;
   }
 
-  &__text {
-    color: var(--clr-grayish-blue);
-  }
-  &__container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: rem(24);
-    margin-bottom: rem(8);
-    padding: rem(28) rem(0) rem(24) rem(24);
-  }
   &__vertical-line {
     background-color: var(--clr-light-gray);
     width: 2px;
-    margin-left: rem(20);
+    margin-left: rem(18);
     margin-right: rem(20);
+    @include respond(phone) {
+      margin-left: rem(5);
+      margin-right: rem(40);
+    }
   }
   &__you {
     margin-left: rem(7);
@@ -85,8 +109,5 @@
   &__update-btn {
     display: flex;
     justify-content: end;
-  }
-  &__reply {
-    background-color: red;
   }
 }

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import * as api from "../lib/api";
-
+import { catchAsync } from "../errorConroller/catchAsync";
+import { uiActions } from "./ui-slice";
+import { v4 as uuid } from "uuid";
 const findAndOperateOnComment = (data, id, payload, fn) => {
   for (let i = 0; i < data.length; i++) {
     if (data[i].id === id) {
@@ -57,74 +59,63 @@ const commentSlice = createSlice({
 });
 
 export const getAllComments = () => {
-  return async (dispatch) => {
+  return catchAsync(async (dispatch) => {
     try {
-      dispatch(commentActions.setStatus("PENDING"));
       const { comments } = await api.getAllComments();
       dispatch(
         commentActions.setComments({ items: comments, status: "SUCCESS" })
       );
-    } catch (error) {
-      dispatch(commentActions.setStatus("ERROR"));
-    }
-  };
+    } catch (error) {}
+  });
 };
 
 export const deleteComment = (commentId) => {
-  return async (dispatch) => {
-    try {
-      await api.deleteComment(commentId);
-      dispatch(commentActions.deleteComment(commentId));
-    } catch (error) {
-      dispatch(commentActions.setStatus("ERROR"));
-    }
-  };
+  return catchAsync(async (dispatch) => {
+    await api.deleteComment(commentId);
+    dispatch(commentActions.deleteComment(commentId));
+    dispatch(uiActions.addNotif({ title: "Deleted Successfully", id: uuid() }));
+  });
 };
 
 export const updateComment = (commentId, comment) => {
-  return async (dispatch) => {
-    try {
-      const { data: updatedComment } = await api.updateComment(
-        commentId,
-        comment
-      );
-      dispatch(commentActions.updateComment(updatedComment));
-    } catch (error) {
-      dispatch(commentActions.setStatus("ERROR"));
-    }
-  };
+  return catchAsync(async (dispatch) => {
+    const { data: updatedComment } = await api.updateComment(
+      commentId,
+      comment
+    );
+    dispatch(commentActions.updateComment(updatedComment));
+    dispatch(uiActions.setCommentState({ operation: null, id: null }));
+  });
 };
 
 export const addComment = (content) => {
   return async (dispatch, getState) => {
-    try {
-      const user = getState().auth.userInfo;
-      const data = await api.createComment({
-        content,
-        user: user._id,
-      });
-      dispatch(
-        commentActions.addToComments({
-          ...data,
-          user,
-        })
-      );
-    } catch (error) {
-      dispatch(commentActions.setStatus("ERROR"));
-    }
+    const user = getState().auth.userInfo;
+    const { data } = await api.createComment({
+      content,
+      user: user._id,
+    });
+
+    dispatch(
+      commentActions.addToComments({
+        ...data.data,
+        user,
+      })
+    );
   };
 };
 
 export const replyComment = (replyingTo, content) => {
   return async (dispatch, getState) => {
     const user = getState().auth.userInfo;
-    const data = await api.createComment({
+    const { data } = await api.createComment({
       content,
       replyingTo,
       user: user._id,
     });
-    data.user = user;
-    dispatch(commentActions.addReplyToComment(data));
+    data.data.user = user;
+    dispatch(commentActions.addReplyToComment(data.data));
+    dispatch(uiActions.setCommentState({ operation: null, id: null }));
   };
 };
 export const commentActions = commentSlice.actions;

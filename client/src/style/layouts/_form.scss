@@ -19,4 +19,8 @@
     margin-bottom: rem(32);
     color: var(--clr-grayish-blue);
   }
+  @include respond(phone) {
+    margin: 0 rem(16);
+    padding: rem(16) rem(16);
+  }
 }

@@ -1,8 +1,11 @@
 import React, { Fragment } from "react";
+import { v4 as uuid } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { login } from "../store/auth-slice";
+import { uiActions } from "../store/ui-slice";
+
 const Login = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
@@ -18,6 +21,15 @@ const Login = () => {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if (!form.email || !form.password) {
+      dispatch(
+        uiActions.addNotif({
+          title: "Please provide email and password",
+          id: uuid(),
+        })
+      );
+      return;
+    }
     dispatch(login(form));
   };
 

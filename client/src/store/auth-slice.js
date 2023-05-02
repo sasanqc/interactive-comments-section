@@ -13,17 +13,12 @@ const authSlice = createSlice({
   reducers: {
     setAuthState(state, action) {
       const { token, userInfo, expiresAt } = action.payload;
-      console.log("authState: ", token, userInfo, expiresAt);
       state.token = token;
       state.userInfo = userInfo;
       state.expiresAt = expiresAt;
       if (!token || !expiresAt) {
         state.isAuthenticated = false;
       } else {
-        // console.log(
-        //   "diff:",
-        //   new Date().getTime() - new Date(expiresAt).getTime()
-        // );
         state.isAuthenticated =
           new Date().getTime() < new Date(expiresAt).getTime();
       }
@@ -44,14 +39,6 @@ const authSlice = createSlice({
 export const login = (credentials) => {
   return catchAsync(async (dispatch) => {
     const response = await api.login(credentials);
-    console.log(response);
-    if (
-      !response ||
-      response?.status === "fail" ||
-      response?.status === "error"
-    ) {
-      throw new Error(response.message);
-    }
     const {
       expiresAt,
       token,
@@ -63,22 +50,18 @@ export const login = (credentials) => {
   });
 };
 export const signup = (credentials) => {
-  return async (dispatch) => {
-    try {
-      const {
-        expiresAt,
-        token,
-        data: { user: userInfo },
-      } = await api.signup(credentials);
+  return catchAsync(async (dispatch) => {
+    const response = await api.signup(credentials);
+    const {
+      expiresAt,
+      token,
+      data: { user: userInfo },
+    } = response;
+    dispatch(authActions.setAuthState({ expiresAt, token, userInfo }));
 
-      dispatch(authActions.setAuthState({ expiresAt, token, userInfo }));
-
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      localStorage.setItem("expiresAt", expiresAt);
-    } catch (error) {
-      //dispatch(commentActions.setStatus("ERROR"));
-    }
-  };
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+    localStorage.setItem("expiresAt", expiresAt);
+  });
 };
 export const refresh = () => {
   return async (dispatch) => {
@@ -96,7 +79,6 @@ export const refresh = () => {
 };
 export const logout = () => {
   return async (dispatch) => {
-    console.log("logout");
     Cookies.remove("token");
     await api.logout();
     localStorage.removeItem("userInfo");
@@ -109,7 +91,6 @@ export const updateMe = (data) => {
   return async (dispatch) => {
     const { user: userInfo } = await api.updateMe(data);
     localStorage.setItem("userInfo", JSON.stringify(userInfo));
-    console.log(userInfo);
     dispatch(authActions.updateUserInfo(userInfo));
   };
 };

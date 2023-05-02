@@ -10,7 +10,6 @@ export const getAll = async (resource) => {
 };
 
 export const deleteOne = async (id, resource) => {
-  console.log("delete: ");
   await fetch(`${API_DOMAIN}/${resource}/${id}`, {
     method: "DELETE",
   });
@@ -24,6 +23,9 @@ export const createOne = async (body, resource) => {
       body: JSON.stringify(body),
     });
     const data = await response.json();
+    if (!data || data?.status === "fail" || data?.status === "error") {
+      throw new Error(data.message);
+    }
     return data;
   } catch (error) {
     throw error;

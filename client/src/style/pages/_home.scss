@@ -2,4 +2,9 @@
 .home {
   max-width: rem(730);
   margin: rem(64) auto;
+  @include respond(phone) {
+    padding: rem(0) rem(16, $fs-s);
+
+    margin: rem(32, $fs-s) auto;
+  }
 }

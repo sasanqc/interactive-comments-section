@@ -1,7 +1,9 @@
 import React, { Fragment, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { Link, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signup } from "../store/auth-slice";
+import { uiActions } from "../store/ui-slice";
 const Signup = () => {
   const [form, setForm] = useState({});
   const auth = useSelector((state) => state.auth);
@@ -15,6 +17,20 @@ const Signup = () => {
   };
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if (
+      !form.username ||
+      !form.email ||
+      !form.password ||
+      !form.confirmPassword
+    ) {
+      dispatch(
+        uiActions.addNotif({
+          title: "Please provide all required fields",
+          id: uuid(),
+        })
+      );
+      return;
+    }
     dispatch(signup(form));
   };
   return (
@@ -30,30 +46,29 @@ const Signup = () => {
           </Link>
         </p>
         <br />
-        <div className="flex-container gap-s">
-          <label className="text-input">
-            <p className="heading-m">Username</p>
-            <input
-              type="text"
-              name="username"
-              value={form.username || ""}
-              placeholder="Username"
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label className="text-input">
-            <p className="heading-m">Email</p>
-            <input
-              type="email"
-              name="email"
-              value={form.email || ""}
-              placeholder="Email"
-              onChange={handleChange}
-              required
-            />
-          </label>
-        </div>
+
+        <label className="text-input">
+          <p className="heading-m">Username</p>
+          <input
+            type="text"
+            name="username"
+            value={form.username || ""}
+            placeholder="Username"
+            onChange={handleChange}
+            required
+          />
+        </label>
+        <label className="text-input">
+          <p className="heading-m">Email</p>
+          <input
+            type="email"
+            name="email"
+            value={form.email || ""}
+            placeholder="Email"
+            onChange={handleChange}
+            required
+          />
+        </label>
 
         <label className="text-input">
           <p className="heading-m">Password</p>

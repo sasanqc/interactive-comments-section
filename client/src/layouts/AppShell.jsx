@@ -16,11 +16,6 @@ const AppShell = ({ children }) => {
     history.push("/login");
   };
 
-  useEffect(() => {
-    console.log("shell use effect");
-    return () => {};
-  }, []);
-
   return (
     <main>
       <ul className="notifications">

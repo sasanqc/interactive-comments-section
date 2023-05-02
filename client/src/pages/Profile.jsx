@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuid } from "uuid";
 import { updateMe } from "../store/auth-slice";
+import { uiActions } from "../store/ui-slice";
 const Profile = () => {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -22,6 +24,12 @@ const Profile = () => {
   const handleUploadClick = (e) => {
     e.preventDefault();
     if (!usernameRef.current.value) {
+      dispatch(
+        uiActions.addNotif({
+          title: "please fill the username field",
+          id: uuid(),
+        })
+      );
       return;
     }
     dispatch(updateMe({ username: usernameRef.current.value, selectedFile }));
@@ -53,7 +61,7 @@ const Profile = () => {
             />
           </div>
           <label className="file-input" htmlFor="photo">
-            Edit profile photo
+            Change profile photo
             <input
               type="file"
               id="photo"

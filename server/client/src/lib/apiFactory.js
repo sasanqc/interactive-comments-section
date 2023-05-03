@@ -1,4 +1,4 @@
-const API_DOMAIN = "http://localhost:3000/api/v1";
+const API_DOMAIN = "/api/v1";
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",

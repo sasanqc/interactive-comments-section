@@ -15,11 +15,12 @@ const createSendToken = (user, statusCode, req, res) => {
   const expires = new Date(
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   );
-  res.cookie("token", token, {
+  const cookieOptions = {
     expires,
     httpOnly: true,
     // secure: req.secure || req.headers["x-forwarded-proto"] === "https",
-  });
+  };
+  res.cookie("token", token);
 
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   // Remove password from output

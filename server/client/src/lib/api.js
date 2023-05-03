@@ -1,5 +1,5 @@
 import { getAll, deleteOne, createOne, updateOne, getOne } from "./apiFactory";
-const API_DOMAIN = "http://localhost:3000/api/v1";
+const API_DOMAIN = "/api/v1";
 
 export const getAllComments = async () => getAll("comments");
 export const deleteComment = async (id) => deleteOne(id, "comments");

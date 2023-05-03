@@ -130,6 +130,9 @@ const Comment = ({ comment, replyTo }) => {
             </div>
           </Fragment>
         )}
+        {operation === "edit" && id !== comment.id && (
+          <p className="body comment__text">{comment.content}</p>
+        )}
         {operation !== "edit" && (
           <p className="body comment__text">{comment.content}</p>
         )}

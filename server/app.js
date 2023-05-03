@@ -18,9 +18,11 @@ const app = express();
 
 const port = process.env.PORT || 3500;
 const DB = process.env.DB;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+console.log(DB.replace("<password>", DB_PASSWORD));
 app.listen(port, () => console.log(`app running on port ${port}`));
 mongoose
-  .connect(DB)
+  .connect(DB.replace("<password>", DB_PASSWORD))
   .then(() => console.log("connected to database successfully"))
   .catch((err) => console.log(err.message));
 
@@ -74,8 +76,11 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/users", userRouter);
-app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-});
 
 app.use(globalErrorHandler);
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
+}

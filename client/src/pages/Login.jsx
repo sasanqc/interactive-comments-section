@@ -47,12 +47,12 @@ const Login = () => {
         </p>
         <br />
         <label className="text-input">
-          <p className="heading-m">Email</p>
+          <p className="heading-m">Email (Fake emails are accepted)</p>
           <input
             type="email"
             name="email"
             value={form.email || ""}
-            placeholder="Email"
+            placeholder="Fake Email"
             onChange={handleChange}
             required
           />

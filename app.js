@@ -73,7 +73,7 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
-app.use(express.static(path.join(__dirname, "public")));
+
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/users", userRouter);
 

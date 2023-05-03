@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/static/css/main.384834ec.css",
-    "main.js": "/static/js/main.9244bba6.js",
-    "static/js/38.05843287.chunk.js": "/static/js/38.05843287.chunk.js",
+    "main.js": "/static/js/main.b91452ef.js",
+    "static/js/38.2023e6d1.chunk.js": "/static/js/38.2023e6d1.chunk.js",
     "static/js/805.407402a3.chunk.js": "/static/js/805.407402a3.chunk.js",
     "static/js/819.37f0cdd0.chunk.js": "/static/js/819.37f0cdd0.chunk.js",
-    "static/js/315.edffc111.chunk.js": "/static/js/315.edffc111.chunk.js",
+    "static/js/315.2de44f17.chunk.js": "/static/js/315.2de44f17.chunk.js",
     "static/media/Rubik-VariableFont_wght.ttf": "/static/media/Rubik-VariableFont_wght.8b975fd73aa3f560c113.ttf",
     "index.html": "/index.html",
     "static/media/icon-plus.svg": "/static/media/icon-plus.0037a825a550965779412c2890bd328b.svg",
@@ -14,14 +14,14 @@
     "static/media/icon-minus.svg": "/static/media/icon-minus.4aa6933cb1575b3c54fa67d84a61efaf.svg",
     "static/media/icon-delete.svg": "/static/media/icon-delete.f0b7c58415977d657caf120679c041b7.svg",
     "main.384834ec.css.map": "/static/css/main.384834ec.css.map",
-    "main.9244bba6.js.map": "/static/js/main.9244bba6.js.map",
-    "38.05843287.chunk.js.map": "/static/js/38.05843287.chunk.js.map",
+    "main.b91452ef.js.map": "/static/js/main.b91452ef.js.map",
+    "38.2023e6d1.chunk.js.map": "/static/js/38.2023e6d1.chunk.js.map",
     "805.407402a3.chunk.js.map": "/static/js/805.407402a3.chunk.js.map",
     "819.37f0cdd0.chunk.js.map": "/static/js/819.37f0cdd0.chunk.js.map",
-    "315.edffc111.chunk.js.map": "/static/js/315.edffc111.chunk.js.map"
+    "315.2de44f17.chunk.js.map": "/static/js/315.2de44f17.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.384834ec.css",
-    "static/js/main.9244bba6.js"
+    "static/js/main.b91452ef.js"
   ]
 }

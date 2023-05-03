@@ -7,19 +7,19 @@ const Profile = () => {
   const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState(null);
   const usernameRef = useRef(null);
-  const imgRef = useRef();
+  //const imgRef = useRef();
   const user = useSelector((state) => state.auth.userInfo);
   const handleFileChange = (e) => {
     if (e.target.files) {
       const [file] = e.target.files;
       setSelectedFile(file);
-      imgRef.current.src = URL.createObjectURL(file);
+      //imgRef.current.src = URL.createObjectURL(file);
     }
   };
 
-  const handleLoadAvatar = (e) => {
-    imgRef.current.src = URL.createObjectURL(selectedFile);
-  };
+  // const handleLoadAvatar = (e) => {
+  //   imgRef.current.src = URL.createObjectURL(selectedFile);
+  // };
 
   const handleUploadClick = (e) => {
     e.preventDefault();
@@ -56,8 +56,8 @@ const Profile = () => {
               src={`./images/avatars/${user.image?.png}`}
               className="portrait"
               alt="profile"
-              ref={imgRef}
-              onError={handleLoadAvatar}
+              //ref={imgRef}
+              // onError={handleLoadAvatar}
             />
           </div>
           <label className="file-input" htmlFor="photo">

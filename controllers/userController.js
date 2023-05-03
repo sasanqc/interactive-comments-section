@@ -37,7 +37,7 @@ exports.resizeUserPhoto = (req, res, next) => {
     .resize(500, 500)
     .toFormat("png")
     .png({ quality: 90 })
-    .toFile(`./public/images/avatars/${req.file.filename}`);
+    .toFile(`./client/build/images/avatars/${req.file.filename}`);
   next();
 };
 exports.updateMe = catchAsync(async (req, res, next) => {

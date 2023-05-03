@@ -56,12 +56,12 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 - CSS custom properties
 - Flexbox
 - CSS Grid
-- Mobile-first workflow
+- Desktop-first workflow
 - [React](https://reactjs.org/) - JS library
-- [Next.js](https://nextjs.org/) - React framework
-- [Styled Components](https://styled-components.com/) - For styles
-
-**Note: These are just examples. Delete this note and replace the list above with your own choices**
+- [MongoDB](https://www.mongodb.com/) - MongoDB database
+- [Node.js](https://nodejs.org) - Node.js
+- [express](https://expressjs.com) - Express - Node.js web application framework
+  **Note: These are just examples. Delete this note and replace the list above with your own choices**
 
 ### What I learned
 

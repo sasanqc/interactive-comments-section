@@ -64,7 +64,7 @@ const Signup = () => {
             type="email"
             name="email"
             value={form.email || ""}
-            placeholder="Email"
+            placeholder="Fake Email"
             onChange={handleChange}
             required
           />
